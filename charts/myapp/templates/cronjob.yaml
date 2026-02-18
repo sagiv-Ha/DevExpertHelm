@@ -1,9 +1,10 @@
+{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 50 | trimSuffix "-" -}}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "myapp.fullname" . }}-cron
+  name: {{ $fullname }}-cron
   labels:
-    {{- include "myapp.labels" . | nindent 4 }}
+    app: {{ $fullname }}-cron
 spec:
   schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 1
@@ -11,6 +12,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            app: {{ $fullname }}-cron
         spec:
           restartPolicy: Never
           containers:

@@ -1,8 +1,9 @@
+{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "myapp.fullname" . }}-config
+  name: {{ $fullname }}-config
   labels:
-    {{- include "myapp.labels" . | nindent 4 }}
+    app: {{ $fullname }}
 data:
   dummy: "will be used in Part 5"

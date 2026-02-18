@@ -1,13 +1,14 @@
+{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "myapp.fullname" . }}
+  name: {{ $fullname }}
   labels:
-    {{- include "myapp.labels" . | nindent 4 }}
+    app: {{ $fullname }}
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app: {{ include "myapp.fullname" . }}
+    app: {{ $fullname }}
   ports:
     - name: http
       port: {{ .Values.service.port }}

@@ -1,17 +1,18 @@
+{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 55 | trimSuffix "-" -}}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "myapp.fullname" . }}-ds
+  name: {{ $fullname }}-ds
   labels:
-    {{- include "myapp.labels" . | nindent 4 }}
+    app: {{ $fullname }}-ds
 spec:
   selector:
     matchLabels:
-      app: {{ include "myapp.fullname" . }}-ds
+      app: {{ $fullname }}-ds
   template:
     metadata:
       labels:
-        app: {{ include "myapp.fullname" . }}-ds
+        app: {{ $fullname }}-ds
     spec:
       containers:
         - name: http-echo

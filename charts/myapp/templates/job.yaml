@@ -1,14 +1,15 @@
+{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 55 | trimSuffix "-" -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "myapp.fullname" . }}-job
+  name: {{ $fullname }}-job
   labels:
-    {{- include "myapp.labels" . | nindent 4 }}
+    app: {{ $fullname }}-job
 spec:
   template:
     metadata:
       labels:
-        job: {{ include "myapp.fullname" . }}-job
+        app: {{ $fullname }}-job
     spec:
       restartPolicy: Never
       containers:
