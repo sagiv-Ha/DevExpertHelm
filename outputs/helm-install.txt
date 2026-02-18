@@ -1,0 +1,46 @@
+Release "myapp" does not exist. Installing it now.
+NAME: myapp
+LAST DEPLOYED: Wed Feb 18 23:06:24 2026
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NAME                               READY   STATUS    RESTARTS      AGE
+pod/backend-576ccdb8d-bkshz        1/1     Running   3 (27m ago)   27d
+pod/backend-576ccdb8d-skqb2        1/1     Running   3 (27m ago)   27d
+pod/frontend-7b9bcbbfc4-4drrb      1/1     Running   3 (27m ago)   27d
+pod/myapp-myapp-787c6cc78f-tkxwb   1/1     Running   0             17s
+pod/myapp-myapp-ds-2x6zc           1/1     Running   0             17s
+pod/myapp-myapp-job-7r562          1/1     Running   0             17s
+
+NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/backend       ClusterIP   10.110.154.25   <none>        80/TCP         27d
+service/frontend      NodePort    10.107.95.171   <none>        80:32307/TCP   27d
+service/kubernetes    ClusterIP   10.96.0.1       <none>        443/TCP        27d
+service/myapp-myapp   ClusterIP   10.98.108.178   <none>        5678/TCP       17s
+
+NAME                            DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/myapp-myapp-ds   1         1         1       1            1           <none>          17s
+
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/backend       2/2     2            2           27d
+deployment.apps/frontend      1/1     1            1           27d
+deployment.apps/myapp-myapp   1/1     1            1           17s
+
+NAME                                     DESIRED   CURRENT   READY   AGE
+replicaset.apps/backend-576ccdb8d        2         2         2       27d
+replicaset.apps/frontend-7b9bcbbfc4      1         1         1       27d
+replicaset.apps/myapp-myapp-787c6cc78f   1         1         1       17s
+
+NAME                             SCHEDULE      TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/myapp-myapp-cron   */5 * * * *   <none>     False     0        <none>          17s
+
+NAME                        STATUS    COMPLETIONS   DURATION   AGE
+job.batch/myapp-myapp-job   Running   0/1           17s        17s
+NAME                 DATA   AGE
+kube-root-ca.crt     1      27d
+myapp-myapp-config   1      42s
+NAME                          TYPE                 DATA   AGE
+myapp-myapp-secret            Opaque               1      54s
+sh.helm.release.v1.myapp.v1   helm.sh/release.v1   1      54s
