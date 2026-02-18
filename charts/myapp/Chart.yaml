@@ -1,0 +1,6 @@
+apiVersion: v2
+name: myapp
+description: Helm From Scratch - multi-resource demo chart (deployment/service/daemonset/cronjob/job/configmap/secret)
+type: application
+version: 0.1.0
+appVersion: "0.3.1"
