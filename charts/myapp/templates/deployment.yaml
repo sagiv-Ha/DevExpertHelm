@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "myapp.fullname" . }}
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "myapp.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "myapp.fullname" . }}
+    spec:
+      containers:
+        - name: http-echo
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            {{- toYaml .Values.image.command | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "myapp.fullname" . }}-ds
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "myapp.fullname" . }}-ds
+  template:
+    metadata:
+      labels:
+        app: {{ include "myapp.fullname" . }}-ds
+    spec:
+      containers:
+        - name: http-echo
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-text=DaemonSet says hello from node"
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}

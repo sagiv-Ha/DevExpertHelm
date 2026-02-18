@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "myapp.fullname" . }}-job
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+      labels:
+        job: {{ include "myapp.fullname" . }}-job
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: job-echo
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-text=Job run from Helm"
