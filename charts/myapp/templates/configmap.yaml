@@ -1,11 +1,10 @@
-{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- $appname := printf "%s-%s" .Release.Name .Chart.Name -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $fullname }}-config
+  name: {{ $appname }}-config
   labels:
-    app: {{ $fullname }}
+    app: {{ $appname }}
 data:
-  MESSAGE: {{ .Values.config.message | quote }}
-  PORT: {{ .Values.config.port | quote }}
-
+  message: {{ .Values.config.message | quote }}
+  port: {{ .Values.config.port | quote }}
