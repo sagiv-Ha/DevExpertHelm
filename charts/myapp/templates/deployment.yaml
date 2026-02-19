@@ -1,26 +1,27 @@
-{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- $appname := printf "%s-%s" .Release.Name .Chart.Name -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $fullname }}
+  name: {{ $appname }}
   labels:
-    app: {{ $fullname }}
+    app: {{ $appname }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount | default 1 }}
   selector:
     matchLabels:
-      app: {{ $fullname }}
+      app: {{ $appname }}
   template:
     metadata:
       labels:
-        app: {{ $fullname }}
+        app: {{ $appname }}
     spec:
       containers:
-        - name: http-echo
+        - name: {{ $appname }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           args:
-{{ toYaml .Values.image.command | nindent 12 }}
+{{- range .Values.image.command }}
+            - {{ . | quote }}
+{{- end }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
+            - containerPort: {{ .Values.service.port | default 5678 }}

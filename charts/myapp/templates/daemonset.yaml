@@ -1,25 +1,24 @@
-{{- $fullname := printf "%s-%s" .Release.Name .Chart.Name | trunc 55 | trimSuffix "-" -}}
+{{- $appname := printf "%s-%s" .Release.Name .Chart.Name -}}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ $fullname }}-ds
+  name: {{ $appname }}-ds
   labels:
-    app: {{ $fullname }}-ds
+    app: {{ $appname }}
 spec:
   selector:
     matchLabels:
-      app: {{ $fullname }}-ds
+      app: {{ $appname }}
   template:
     metadata:
       labels:
-        app: {{ $fullname }}-ds
+        app: {{ $appname }}
     spec:
       containers:
-        - name: http-echo
+        - name: {{ $appname }}-ds
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           args:
-            - "-text=DaemonSet says hello from node"
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
+{{- range .Values.image.command }}
+            - {{ . | quote }}
+{{- end }}

@@ -1,9 +1,17 @@
 image:
   repository: hashicorp/http-echo
-  tag: "0.3.0"
+  tag: "0.2.3"
   pullPolicy: IfNotPresent
   command:
     - "-text=Hello from Helm"
+
 service:
   type: ClusterIP
   port: 5678
+
+config:
+  message: "Hello from Helm (ConfigMap)"
+  port: "5678"
+
+secret:
+  apiToken: "my-super-token"

@@ -6,4 +6,6 @@ metadata:
   labels:
     app: {{ $fullname }}
 data:
-  dummy: "will be used in Part 5"
+  MESSAGE: {{ .Values.config.message | quote }}
+  PORT: {{ .Values.config.port | quote }}
+
