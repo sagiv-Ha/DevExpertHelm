@@ -54,8 +54,11 @@ The Deployment and DaemonSet consume the Secret:
 API_TOKEN
 2. As a mounted volume:
 /etc/myapp/secret
+
 This ensures sensitive data is separated from the container image and can be managed securely.
-*Why This Is Important*
+
+Why This Is Important
+
 Configuration is externalized from the image.
 Sensitive data is separated from non-sensitive configuration.
 Changes to ConfigMap or Secret can be applied using Helm upgrades.
