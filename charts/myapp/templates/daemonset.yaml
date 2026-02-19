@@ -18,7 +18,39 @@ spec:
         - name: {{ $appname }}-ds
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: IfNotPresent
+
           args:
 {{- range .Values.image.command }}
             - {{ . | quote }}
 {{- end }}
+
+          ports:
+            - containerPort: {{ .Values.service.port | default 5678 }}
+
+          env:
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $appname }}-config
+                  key: message
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $appname }}-secret
+                  key: apiToken
+
+          volumeMounts:
+            - name: app-config
+              mountPath: /etc/myapp/config
+              readOnly: true
+            - name: app-secret
+              mountPath: /etc/myapp/secret
+              readOnly: true
+
+      volumes:
+        - name: app-config
+          configMap:
+            name: {{ $appname }}-config
+        - name: app-secret
+          secret:
+            secretName: {{ $appname }}-secret
